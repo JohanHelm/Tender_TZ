@@ -1,6 +1,6 @@
 from requests import Session
 
-from get_parse import GetPageData, parse_xml_form, parse_main_page
+from get_parse import GetPageData, GetXmlForm
 
 
 headers = {
@@ -13,12 +13,13 @@ def main():
                  "https://zakupki.gov.ru/epz/order/extendedsearch/results.html?fz44=on&pageNumber=2")
     session = Session()
     session.headers.update(headers)
-    gpd = GetPageData()
+    gpd = GetPageData(session)
+    gxf = GetXmlForm(session)
     for url in main_urls:
-        html_response = gpd.run(url, session)
-        for xml_link in parse_main_page(html_response):
-            xml_response = gpd.run(xml_link, session)
-            print(xml_link, parse_xml_form(xml_response))
+        print_link_iterator = gpd.run(url)
+        for xml_link in print_link_iterator:
+            result = gxf.run(xml_link)
+            print(xml_link, result)
 
 
 if __name__ == "__main__":
