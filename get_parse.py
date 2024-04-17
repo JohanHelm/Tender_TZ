@@ -1,4 +1,3 @@
-from requests import Session
 from requests.models import Response
 from bs4 import BeautifulSoup
 from celery import Celery, Task
