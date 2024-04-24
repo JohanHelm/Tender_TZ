@@ -1,19 +1,12 @@
 from get_parse import GetPageData, GetXmlForm
+from re import fullmatch
 
 
 def test_main_page(create_session):
     gpd = GetPageData(create_session)
-    assert tuple(gpd.run("https://zakupki.gov.ru/epz/order/extendedsearch/results.html?fz44=on&pageNumber=1")) == \
-           ("https://zakupki.gov.ru/epz/order/notice/printForm/viewXml.html?regNumber=0338300019624000023",
-            "https://zakupki.gov.ru/epz/order/notice/printForm/viewXml.html?regNumber=0138100003124000021",
-            "https://zakupki.gov.ru/epz/order/notice/printForm/viewXml.html?regNumber=0138300000124000077",
-            "https://zakupki.gov.ru/epz/order/notice/printForm/viewXml.html?regNumber=0138100003124000022",
-            "https://zakupki.gov.ru/epz/order/notice/printForm/viewXml.html?regNumber=0338200009824000180",
-            "https://zakupki.gov.ru/epz/order/notice/printForm/viewXml.html?regNumber=0338200009824000210",
-            "https://zakupki.gov.ru/epz/order/notice/printForm/viewXml.html?regNumber=0888500000224000139",
-            "https://zakupki.gov.ru/epz/order/notice/printForm/viewXml.html?regNumber=0338200013924000114",
-            "https://zakupki.gov.ru/epz/order/notice/printForm/viewXml.html?regNumber=0188300000224000034",
-            "https://zakupki.gov.ru/epz/order/notice/printForm/viewXml.html?regNumber=0338200010024000036")
+    pattern = "https:\/\/zakupki.gov.ru\/epz\/order\/notice\/printForm\/viewXml\.html\?regNumber=[0-9]{19}"
+    assert all([fullmatch(pattern, link) for link in
+                gpd.run("https://zakupki.gov.ru/epz/order/extendedsearch/results.html?fz44=on&pageNumber=1")])
 
 def test_xml_form(create_session):
     gxf = GetXmlForm(create_session)
