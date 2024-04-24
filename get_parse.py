@@ -38,6 +38,6 @@ class GetXmlForm(Task):
         return result
 
 
-class GetHelloWorld(Task):
+class CoiZhiv(Task):
     def run(self):
-        return ["hello world"]
+        return "Цой жив!!!"
